@@ -23,12 +23,12 @@ of the `swagger-client` interface intact.
 
 Here's a modified version of the example from the [swagger-client README](https://github.com/swagger-api/swagger-js#calling-an-api-with-swagger--nodejs).
 ```
-var client = require('swagger-client-promises');
+const client = require('swagger-client-promises');
 
-var swagger = new client({
+const swagger = new client({
   url: 'http://petstore.swagger.io/v2/swagger.json',
   success: () => {
-    swagger.pet.getPetById({petId:7},{responseContentType: 'application/json'})
+    swagger.pet.getPetById({petId: 7}, {responseContentType: 'application/json'})
     .then(pet => {
       console.log('pet', pet);
     })
