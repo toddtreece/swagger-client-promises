@@ -1,11 +1,12 @@
 'use strict';
 
 const gulp = require('gulp'),
-      jshint = require('gulp-jshint');
+      jshint = require('gulp-jshint'),
+      mocha = require('gulp-mocha');
 
 gulp.task('lint', function() {
 
-  var lint = jshint({
+  const lint = jshint({
     "esnext": true,
     "curly": false,
     "eqeqeq": true,
@@ -14,7 +15,7 @@ gulp.task('lint', function() {
     "newcap": false,
     "noarg": true,
     "sub": true,
-    "undef": false,
+    "undef": true,
     "unused": "var",
     "boss": true,
     "eqnull": true,
@@ -23,10 +24,23 @@ gulp.task('lint', function() {
   });
 
   return gulp.src([
-    'index.js',
-    'test/*.js'
+    'index.js'
   ]).pipe(lint).pipe(jshint.reporter('jshint-stylish'));
 
 });
 
-gulp.task('default', ['lint']);
+gulp.task('test', function() {
+
+  return gulp.src('test/*.js', {read: false})
+    .pipe(mocha())
+    .once('error', function(err) {
+      console.error(err.toString());
+      process.exit(1);
+    })
+    .once('end', function() {
+      process.exit();
+    });
+
+});
+
+gulp.task('default', ['lint', 'test']);
