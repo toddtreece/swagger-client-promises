@@ -1,28 +1,36 @@
 {
-  "name": "swagger-js-promises",
+  "name": "swagger-client-promises",
   "version": "0.1.0",
-  "description": "An ES6 promise wrapper for swagger-js",
+  "description": "An ES6 promise wrapper for swagger-client",
   "main": "index.js",
   "scripts": {
     "test": "gulp test"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toddtreece/swagger-js-promises.git"
+    "url": "git+https://github.com/toddtreece/swagger-client-promises.git"
   },
   "keywords": [
     "swagger",
-    "swagger-js",
+    "swagger-client",
     "es6",
     "promise"
   ],
   "author": "Todd Treece <todd@uniontownlabs.org>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/toddtreece/swagger-js-promises/issues"
+    "url": "https://github.com/toddtreece/swagger-client-promises/issues"
   },
-  "homepage": "https://github.com/toddtreece/swagger-js-promises#readme",
+  "homepage": "https://github.com/toddtreece/swagger-client-promises#readme",
   "dependencies": {
     "swagger-client": "^2.1.4"
+  },
+  "engines": {
+    "node": ">=4.0.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.0",
+    "gulp-jshint": "^1.11.2",
+    "jshint-stylish": "^2.0.1"
   }
 }
