@@ -20,6 +20,7 @@ class SwaggerPromisify extends Swagger {
     super(options);
 
   }
+
   _promisify() {
 
     Object.keys(this.apis).forEach(api => {
@@ -29,18 +30,23 @@ class SwaggerPromisify extends Swagger {
 
       Object.keys(this.apis[api].operations).forEach(operation => {
 
-        this.apis[api][operation] = (...args) => {
+        const original = this[api][operation].bind(this);
+
+        // TODO: replace with fat arrow & ...args once node.js has the ES6 spead operator
+        this[api][operation] = function() {
+
+          const args = Array.prototype.slice.call(arguments);
 
           return new Promise((resolve, reject) => {
 
-            args.push(response => { resolve(response); });
-            args.push(response => { reject(response);  });
+            args.push(response => resolve(response));
+            args.push(response => reject(response));
 
-            this.apis[api][operation].apply(this, args);
+            original.apply(this, args);
 
           });
 
-        };
+        }.bind(this);
 
       });
 
