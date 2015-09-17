@@ -1,51 +1,53 @@
 'use strict';
 
-const promisify = function promisify(operation) {
+const Swagger = require('swagger-client');
 
-  return (...args) => {
+class SwaggerPromisify extends Swagger {
 
-    return new Promise((resolve, reject) => {
+  constructor(options) {
 
-      args.push(response => { resolve(response); });
-      args.push(response => { reject(response);  });
+    const original = Object.assign({}, options);
 
-      operation.apply(this, args);
+    options.success = () => {
+
+      this._promisify();
+
+      if(typeof original.success === 'function')
+        original.success();
+
+    };
+
+    super(options);
+
+  }
+  _promisify() {
+
+    Object.keys(this.apis).forEach(api => {
+
+      if(api === 'help')
+        return;
+
+      Object.keys(this.apis[api].operations).forEach(operation => {
+
+        this.apis[api][operation] = (...args) => {
+
+          return new Promise((resolve, reject) => {
+
+            args.push(response => { resolve(response); });
+            args.push(response => { reject(response);  });
+
+            this.apis[api][operation].apply(this, args);
+
+          });
+
+        };
+
+      });
 
     });
 
-  };
+  }
 
-};
+}
 
-const process = function process(api) {
-
-  const processed = {};
-
-  Object.keys(api.operations).forEach(operation => {
-    processed[operation] = promisify(
-      api[operation]
-    );
-  });
-
-  return processed;
-
-};
-
-const load = function load(module) {
-
-  const apis = {};
-
-  Object.keys(module.client.apis).forEach(api => {
-
-    if(api === 'help')
-      return;
-
-    apis[api] = process(module.client.apis[api]);
-
-  });
-
-  Object.assign(module, apis);
-
-};
-
-module.exports = exports;
+exports = module.exports = SwaggerPromisify;
