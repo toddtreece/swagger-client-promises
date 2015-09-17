@@ -28,7 +28,9 @@ describe('Swagger Promises', function() {
 
       swagger.pet.getPetById({petId:7}, {responseContentType: 'application/json'})
       .then(pet => {
-        if(pet.status === 200) done();
+        if(pet.status === 200) return done();
+
+        done(new Error('pet api call failed'));
       })
       .catch(done);
 
