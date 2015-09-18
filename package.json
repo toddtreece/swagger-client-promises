@@ -1,6 +1,6 @@
 {
   "name": "swagger-client-promises",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "An ES6 promise wrapper for swagger-client",
   "main": "index.js",
   "scripts": {
