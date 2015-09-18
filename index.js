@@ -37,6 +37,9 @@ class SwaggerPromisify extends Swagger {
 
           const args = Array.prototype.slice.call(arguments);
 
+          if(! args.length)
+            args.push(null);
+
           return new Promise((resolve, reject) => {
 
             args.push(response => resolve(response));
